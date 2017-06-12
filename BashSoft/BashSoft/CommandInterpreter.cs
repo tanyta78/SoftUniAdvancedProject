@@ -16,79 +16,24 @@ namespace BashSoft
             switch (command)
             {
                 case "mkdir":
-                    if (data.Length == 2)
-                    {
-                        IOManager.CreateDirectoryInCurrentFolder(data[1]);
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                    TryMakeDirectory(data, command);
                     break;
                 case "ls":
-                    if (data.Length == 1)
-                    {
-                        IOManager.TraverseDirectory(0);
-                    }
-                    else if (data.Length == 2)
-                    {
-                        int depth;
-                        bool hasParsed = int.TryParse(data[1], out depth);
-                        if (hasParsed)
-                        {
-                            IOManager.TraverseDirectory(depth);
-                        }
-                        else
-                        {
-                            OutputWriter.DisplayException(ExceptionMessages.UnableToParseNumber);
-                        }
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                   TryTraverseDirectory(data, command);
                     break;
                 case "cmp":
-                    if (data.Length == 3)
-                    {
-                        Tester.CompareContent(data[1],data[2]);
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                    TryCompareContent(data, command);
                     break;
                 case "cdRel":
                     //changeDirRel
-                    if (data.Length == 2)
-                    {
-                        IOManager.ChangeCurrentDirectoryRelative(data[1]);
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                    TryChangeDirectoryRelative(data, command);
                     break;
                 case "cdAbs":
                     //changeDirAbs
-                    if (data.Length == 2)
-                    {
-                        IOManager.ChangeCurrentDirectoryAbsolute(data[1]);
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                    TryChangeDirectoryAbsolute(data, command);
                     break;
                 case "readDb":
-                    if (data.Length == 2)
-                    {
-                        StudentRepository.InitializeData(data[1]);
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                    TryReadDataBase(data, command);
                     break;
                 case "filter": break;
                 case "order": break;
@@ -98,17 +43,128 @@ namespace BashSoft
                 case "help":
                     GetHelp(); break;
                 case "open":
-                    if (data.Length == 2)
-                    {
-                        Process.Start(SessionData.currentPath + "\\" + $"{data[1]}");
-                    }
-                    else
-                    {
-                        DisplayInvalidCommandMessage(command);
-                    }
+                    TryOpenFile(data, command);
+                    break;
+                case "show": TryShowWantedData(input,data);
                     break;
                 default:DisplayInvalidCommandMessage(input);break;
             }
+        }
+
+        private static void TryReadDataBase(string[] data, string command)
+        {
+            if (data.Length == 2)
+            {
+                StudentRepository.InitializeData(data[1]);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryChangeDirectoryAbsolute(string[] data, string command)
+        {
+            if (data.Length == 2)
+            {
+                IOManager.ChangeCurrentDirectoryAbsolute(data[1]);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryChangeDirectoryRelative(string[] data, string command)
+        {
+            if (data.Length == 2)
+            {
+                IOManager.ChangeCurrentDirectoryRelative(data[1]);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryCompareContent(string[] data, string command)
+        {
+            if (data.Length == 3)
+            {
+                Tester.CompareContent(data[1], data[2]);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryOpenFile(string[] data, string command)
+        {
+            if (data.Length == 2)
+            {
+                Process.Start(SessionData.currentPath + "\\" + $"{data[1]}");
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryTraverseDirectory(string[] data, string command)
+        {
+            if (data.Length == 1)
+            {
+                IOManager.TraverseDirectory(0);
+            }
+            else if (data.Length == 2)
+            {
+                int depth;
+                bool hasParsed = int.TryParse(data[1], out depth);
+                if (hasParsed)
+                {
+                    IOManager.TraverseDirectory(depth);
+                }
+                else
+                {
+                    OutputWriter.DisplayException(ExceptionMessages.UnableToParseNumber);
+                }
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryMakeDirectory(string[] data, string command)
+        {
+            if (data.Length == 2)
+            {
+                IOManager.CreateDirectoryInCurrentFolder(data[1]);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(command);
+            }
+        }
+
+        private static void TryShowWantedData(string input, string[] data)
+        {
+            if (data.Length == 2)
+            {
+                string courseName = data[1];
+                StudentRepository.GetAllStudentsFromCourse(courseName);
+            }else if (data.Length == 3)
+            {
+                string courseName = data[1];
+                string student = data[2];
+                StudentRepository.GetStudentScoresFromCourse(courseName,student);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(input);
+            }
+            
         }
 
         private static void GetHelp()
