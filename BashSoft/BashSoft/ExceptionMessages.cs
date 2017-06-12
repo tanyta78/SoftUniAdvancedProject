@@ -23,5 +23,12 @@
 
        public const string UnableToGoHigherInPartitionHierarchy = "Unable to go higher in partition hierarchy.";
 
-    }
+       public static string UnableToParseNumber = "The sequence you've written is not a valid number." ;
+
+
+       public static string InvalidCommandParams(string command)
+       {
+           return $"The command '{command}' is invalid";
+       }
+   }
 }

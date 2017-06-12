@@ -1,4 +1,6 @@
 ﻿
+using System.IO;
+
 namespace BashSoft
 {
     using System.Collections.Generic;
@@ -8,13 +10,14 @@ namespace BashSoft
     {
         public static bool isDataInitialized = false;
         private static Dictionary<string, Dictionary<string, List<int>>> studentsByCourse;
+        public static string initializedDataName = "";
 
-        public static void InitializeData()
+        public static void InitializeData(string filename)
         {
-            if (!isDataInitialized)
+            if (initializedDataName != filename)
             {
                 studentsByCourse = new Dictionary<string, Dictionary<string, List<int>>>();
-                ReadData();
+                ReadData(filename);
             }
             else
             {
@@ -22,35 +25,44 @@ namespace BashSoft
             }
         }
 
-        private static void ReadData()
+        private static void ReadData(string fileName)
         {
-            string input = Console.ReadLine();
-
-            while (!string.IsNullOrEmpty(input))
+            OutputWriter.WriteMessageOnNewLine("Reading data...");
+            string currentPath = SessionData.currentPath + "\\" + fileName;
+            if (File.Exists(currentPath))
             {
-                string[] tokens = input.Split(' ');
-                string course = tokens[0];
-                string student = tokens[1];
-                int mark = int.Parse(tokens[2]);
-                
-                if (!studentsByCourse.ContainsKey(course))
+                string[] input = File.ReadAllLines(currentPath);
+                for (int i = 0; i < input.Length; i++)
                 {
-                    studentsByCourse.Add(course,new Dictionary<string, List<int>>());
+                    if (!string.IsNullOrEmpty(input[i]))
+                    {
+                        string[] tokens = input[i].Split(' ');
+                        string course = tokens[0];
+                        string student = tokens[1];
+                        int mark = int.Parse(tokens[2]);
+
+                        if (!studentsByCourse.ContainsKey(course))
+                        {
+                            studentsByCourse.Add(course, new Dictionary<string, List<int>>());
+                        }
+
+                        if (!studentsByCourse[course].ContainsKey(student))
+                        {
+                            studentsByCourse[course].Add(student, new List<int>());
+                        }
+
+                        studentsByCourse[course][student].Add(mark);
+                    }
                 }
+                initializedDataName = fileName;
+                isDataInitialized = true;
 
-                if (!studentsByCourse[course].ContainsKey(student))
-                {
-                    studentsByCourse[course].Add(student,new List<int>());
-                }
-
-                studentsByCourse[course][student].Add(mark);
-
-                input = Console.ReadLine();
+                OutputWriter.WriteMessageOnNewLine("Data read!");
             }
-
-            isDataInitialized = true;
-
-            OutputWriter.WriteMessageOnNewLine("Data read!");
+            else
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidPath);
+            }
         }
 
         private static bool IsQueryForCoursePossible(string courseName)
@@ -90,13 +102,13 @@ namespace BashSoft
 
         }
 
-        
+
 
         public static void GetStudentScoresFromCourse(string courseName, string username)
         {
-            if (IsQueryForStudentPossible(courseName,username))
+            if (IsQueryForStudentPossible(courseName, username))
             {
-                OutputWriter.PrintStudent(new KeyValuePair<string, List<int>>(username,studentsByCourse[courseName][username]));
+                OutputWriter.PrintStudent(new KeyValuePair<string, List<int>>(username, studentsByCourse[courseName][username]));
             }
         }
 
@@ -123,5 +135,5 @@ namespace BashSoft
         }
 
 
-  }
+    }
 }

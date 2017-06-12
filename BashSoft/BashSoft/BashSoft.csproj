@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandInterpreter.cs" />
     <Compile Include="ExceptionMessages.cs" />
     <Compile Include="InputReader.cs" />
     <Compile Include="IOManager.cs" />

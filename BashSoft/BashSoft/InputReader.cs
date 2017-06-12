@@ -21,6 +21,8 @@ namespace BashSoft
                 {
                     break;
                 }
+
+                CommandInterpreter.InterpredCommand(input);
             }
         }
     }

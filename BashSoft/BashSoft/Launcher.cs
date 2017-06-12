@@ -20,8 +20,10 @@
 
            // IOManager.TraverseDirectory(0);
 
-            IOManager.ChangeCurrentDirectoryAbsolute(@"C:\Windows");
-            IOManager.TraverseDirectory(20);
+          //  IOManager.ChangeCurrentDirectoryAbsolute(@"C:\Windows");
+            //IOManager.TraverseDirectory(20);
+
+            InputReader.StartReadingCommands();
         }
     }
 }
