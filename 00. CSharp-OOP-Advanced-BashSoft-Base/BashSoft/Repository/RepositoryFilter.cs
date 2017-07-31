@@ -1,15 +1,17 @@
-﻿namespace BashSoft
+﻿using BashSoft.Contracts;
+
+namespace BashSoft
 {
     using System;
     using System.Collections.Generic;
 
-    public class RepositoryFilter
+    public class RepositoryFilter : IDataFilter
     {
         public void FilterAndTake(Dictionary<string, double> studentsWithMarks, string wantedFilters, int studentsToTake)
         {
             if (wantedFilters == "excellent")
             {
-               FilterAndTake(studentsWithMarks, x => x >= 5, studentsToTake); 
+                FilterAndTake(studentsWithMarks, x => x >= 5, studentsToTake);
             }
             else if (wantedFilters == "average")
             {

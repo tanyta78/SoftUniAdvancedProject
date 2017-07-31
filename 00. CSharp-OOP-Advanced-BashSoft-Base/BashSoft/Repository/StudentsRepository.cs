@@ -7,19 +7,20 @@
     using System.Text.RegularExpressions;
     using Execptions;
     using Models;
+    using BashSoft.Contracts;
 
-    public class StudentsRepository
+    public class StudentsRepository : IDatabase
     {
         private bool isDataInilized;
-        private Dictionary<string, Course> courses;
-        private Dictionary<string, Student> students;
+        private Dictionary<string, ICourse> courses;
+        private Dictionary<string, IStudent> students;
         private RepositoryFilter filter;
         private RepositorySorter sorter;
 
         public StudentsRepository(RepositoryFilter filter, RepositorySorter sorter)
         {
-            this.courses = new Dictionary<string, Course>();
-            this.students = new Dictionary<string, Student>();
+            this.courses = new Dictionary<string, ICourse>();
+            this.students = new Dictionary<string, IStudent>();
             this.filter = filter;
             this.sorter = sorter;
             this.isDataInilized = false;
@@ -61,9 +62,9 @@
             {
                 throw new ArgumentException(ExceptionMessages.DataAlreadyInitialisedException);
             }
-            
-            this.courses = new Dictionary<string, Course>();
-            this.students = new Dictionary<string, Student>();
+
+            this.courses = new Dictionary<string, ICourse>();
+            this.students = new Dictionary<string, IStudent>();
             OutputWriter.WriteMessageOnNewLine("Reading data...");
             ReadData(fileName);
         }
@@ -98,7 +99,7 @@
 
                         try
                         {
-                            var scores = scoreStr.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)
+                            var scores = scoreStr.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                                 .Select(int.Parse)
                                 .ToArray();
 
@@ -108,7 +109,7 @@
                                 continue;
                             }
 
-                            if (scores.Length > Course.NumberOfTasksOnExam)
+                            if (scores.Length > SoftUniCourse.NumberOfTasksOnExam)
                             {
                                 OutputWriter.DisplayException(ExceptionMessages.InvalidNumberOfScores);
                                 continue;
@@ -116,12 +117,12 @@
 
                             if (!this.students.ContainsKey(username))
                             {
-                                this.students.Add(username, new Student(username));   
+                                this.students.Add(username, new SoftUniStudent(username));
                             }
 
                             if (!this.courses.ContainsKey(courseName))
                             {
-                                this.courses.Add(courseName, new Course(courseName));
+                                this.courses.Add(courseName, new SoftUniCourse(courseName));
                             }
 
                             var course = this.courses[courseName];
@@ -130,7 +131,6 @@
                             student.EnrollInCourse(course);
                             student.SetMarkOnCourse(courseName, scores);
                             course.EnrollStudent(student);
-                            
                         }
                         catch (FormatException fex)
                         {

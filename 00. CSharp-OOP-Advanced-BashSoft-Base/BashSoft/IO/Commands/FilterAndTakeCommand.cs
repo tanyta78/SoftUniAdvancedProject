@@ -1,11 +1,13 @@
-﻿namespace BashSoft.IO.Commands
+﻿using BashSoft.Contracts;
+
+namespace BashSoft.IO.Commands
 {
     using Execptions;
 
     public class FilterAndTakeCommand : Command
     {
-        public FilterAndTakeCommand(string input, string[] data, Tester judge, StudentsRepository repository,
-            IOManager inputOutputManager) : base(input, data, judge, repository, inputOutputManager) { }
+        public FilterAndTakeCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
+            IDirectoryManager inputOutputManager) : base(input, data, judge, repository, inputOutputManager) { }
 
         private void TryParseParametersForFilterAndTake(string takeCommand, string takeQuantity, string courseName, string filter)
         {

@@ -1,16 +1,18 @@
-﻿namespace BashSoft
+﻿using BashSoft.Contracts;
+
+namespace BashSoft
 {
     using System;
     using Execptions;
     using IO.Commands;
 
-    public class CommandInterpreter
+    public class CommandInterpreter : IInterpreter
     {
-        private Tester judge;
-        private StudentsRepository repository;
-        private IOManager inputOutputManager;
+        private IContentComparer judge;
+        private IDatabase repository;
+        private IDirectoryManager inputOutputManager;
 
-        public CommandInterpreter(Tester judge, StudentsRepository repository, IOManager inputOutputManager)
+        public CommandInterpreter(IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputManager)
         {
             this.judge = judge;
             this.repository = repository;
@@ -24,7 +26,7 @@
 
             try
             {
-                Command command = this.ParseCommand(input, commandName, data);
+                IExecutable command = this.ParseCommand(input, commandName, data);
                 command.Execute();
             }
             catch (Exception e)
@@ -33,32 +35,43 @@
             }
         }
 
-        private Command ParseCommand(string input, string command, string[] data)
+        private IExecutable ParseCommand(string input, string command, string[] data)
         {
             switch (command)
             {
                 case "open":
                     return new OpenFileCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "mkdir":
                     return new MakeDirectoryCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "ls":
                     return new TraverseFoldersCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "cmp":
                     return new CompareFilesCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "cdRel":
                     return new ChangePathRelativelyCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "cdAbs":
                     return new ChangePathAbsoluteCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "readDb":
                     return new ReadDatabaseFromFileCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "help":
                     return new GetHelpCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "filter":
                     return new FilterAndTakeCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "order":
                     return new OrderAndTakeCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "dropdb":
                     return new DropDbCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 case "show":
                     return new ShowWantedDataCommand(input, data, this.judge, this.repository, this.inputOutputManager);
                 //case "decOrder":
@@ -70,6 +83,6 @@
                 default:
                     throw new InvalidCommandException(input);
             }
-        }        
+        }
     }
 }

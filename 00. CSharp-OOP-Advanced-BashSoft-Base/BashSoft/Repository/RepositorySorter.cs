@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using BashSoft.Contracts;
 
-    public class RepositorySorter
+    public class RepositorySorter : IDataSorter
     {
         public void OrderAndTake(Dictionary<string, double> studentsWithMark, string comparison, int studentsToTake)
         {
@@ -16,7 +17,7 @@
                     .Take(studentsToTake)
                     .ToDictionary(x => x.Key, x => x.Value));
             }
-            else if(comparison == "descending")
+            else if (comparison == "descending")
             {
                 this.PrintStudents(studentsWithMark
                     .OrderByDescending(x => x.Value)

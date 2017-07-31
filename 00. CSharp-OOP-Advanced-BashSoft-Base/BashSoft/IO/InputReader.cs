@@ -1,17 +1,20 @@
-﻿namespace BashSoft
+﻿using BashSoft.Contracts;
+
+namespace BashSoft
 {
     using System;
 
-    public class InputReader
+    public class InputReader : IReader
     {
         private const string endCommand = "quit";
-        private CommandInterpreter interpreter;
+        private IInterpreter interpreter;
 
-        public InputReader(CommandInterpreter interpreter)
+        public InputReader(IInterpreter interpreter)
         {
             this.interpreter = interpreter;
         }
-        public  void StartReadingCommands()
+
+        public void StartReadingCommands()
         {
             OutputWriter.WriteMessage($"{SessionData.currentPath}" + "> ");
             string input = Console.ReadLine().Trim();
