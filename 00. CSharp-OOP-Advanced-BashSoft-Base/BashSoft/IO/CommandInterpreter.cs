@@ -2,9 +2,9 @@
 
 namespace BashSoft
 {
-    using System;
     using Execptions;
     using IO.Commands;
+    using System;
 
     public class CommandInterpreter : IInterpreter
     {
@@ -74,12 +74,10 @@ namespace BashSoft
 
                 case "show":
                     return new ShowWantedDataCommand(input, data, this.judge, this.repository, this.inputOutputManager);
-                //case "decOrder":
-                //    break;
-                //case "download":
-                //    break;
-                //case "downloadAsynch":
-                //    break;
+
+                case "display":
+                    return new DisplayCommand(input, data, this.judge, this.repository, this.inputOutputManager);
+
                 default:
                     throw new InvalidCommandException(input);
             }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BashSoft
 {
@@ -12,14 +9,17 @@ namespace BashSoft
         {
             Console.Write(message);
         }
+
         public static void WriteMessageOnNewLine(string message)
         {
             Console.WriteLine(message);
         }
+
         public static void WriteEmptyLine()
         {
             Console.WriteLine();
         }
+
         public static void DisplayException(string message)
         {
             ConsoleColor currentColor = Console.ForegroundColor;

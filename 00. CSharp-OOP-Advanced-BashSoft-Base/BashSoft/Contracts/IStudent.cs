@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BashSoft.Models;
 
 namespace BashSoft.Contracts
 {
-    public interface IStudent
+    public interface IStudent : IComparable<IStudent>
     {
         string Username { get; }
 

@@ -2,9 +2,9 @@
 
 namespace BashSoft
 {
+    using Execptions;
     using System;
     using System.IO;
-    using Execptions;
 
     public class Tester : IContentComparer
     {

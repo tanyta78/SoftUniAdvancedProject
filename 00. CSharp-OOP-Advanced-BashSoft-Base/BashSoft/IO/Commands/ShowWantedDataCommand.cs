@@ -2,7 +2,6 @@
 
 namespace BashSoft.IO.Commands
 {
-    using System.Diagnostics;
     using Execptions;
 
     public class ShowWantedDataCommand : Command

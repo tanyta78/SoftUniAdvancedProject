@@ -2,7 +2,6 @@
 
 namespace BashSoft.IO.Commands
 {
-    using System;
     using Execptions;
 
     public class TraverseFoldersCommand : Command

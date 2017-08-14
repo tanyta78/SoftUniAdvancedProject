@@ -2,11 +2,11 @@
 
 namespace BashSoft
 {
+    using Exceptions;
+    using Execptions;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using Exceptions;
-    using Execptions;
 
     public class IOManager : IDirectoryManager
     {

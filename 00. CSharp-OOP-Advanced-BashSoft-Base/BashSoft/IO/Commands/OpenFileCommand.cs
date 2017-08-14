@@ -2,8 +2,8 @@
 
 namespace BashSoft.IO.Commands
 {
-    using System.Diagnostics;
     using Execptions;
+    using System.Diagnostics;
 
     public class OpenFileCommand : Command
     {

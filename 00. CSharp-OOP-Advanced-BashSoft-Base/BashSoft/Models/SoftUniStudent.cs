@@ -1,10 +1,10 @@
 ﻿namespace BashSoft.Models
 {
+    using BashSoft.Contracts;
+    using Execptions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Execptions;
-    using BashSoft.Contracts;
 
     public class SoftUniStudent : IStudent
     {
@@ -74,6 +74,16 @@
             var mark = percentageOfSolvedExam * 4 + 2;
 
             return mark;
+        }
+
+        public int CompareTo(IStudent other)
+        {
+            return this.Username.CompareTo(other.Username);
+        }
+
+        public override string ToString()
+        {
+            return this.Username;
         }
     }
 }

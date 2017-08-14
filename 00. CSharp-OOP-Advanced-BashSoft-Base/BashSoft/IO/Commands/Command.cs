@@ -2,8 +2,8 @@
 
 namespace BashSoft.IO.Commands
 {
-    using System;
     using Execptions;
+    using System;
 
     public abstract class Command : IExecutable
     {

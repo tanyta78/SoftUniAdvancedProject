@@ -15,7 +15,7 @@
 
         public static string ComparisonOfFilesWithDifferentSizes = "Files not of equal size, certain mismatch.";
 
-       // public static string UnableToParseNumber = "The sequence you've written is not a valid number.";
+        // public static string UnableToParseNumber = "The sequence you've written is not a valid number.";
 
         public static string InvalidStudentFilter =
             "The given filter is not one of the following: excellent/average/poor";

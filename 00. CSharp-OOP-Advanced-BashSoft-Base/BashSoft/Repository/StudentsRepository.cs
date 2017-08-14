@@ -1,13 +1,15 @@
-﻿namespace BashSoft
+﻿using BashSoft.DataStructures;
+
+namespace BashSoft
 {
+    using BashSoft.Contracts;
+    using Execptions;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Execptions;
-    using Models;
-    using BashSoft.Contracts;
 
     public class StudentsRepository : IDatabase
     {
@@ -199,6 +201,22 @@
                     this.GetStudentScoresFromCourse(courseName, studetMarksEntry.Key);
                 }
             }
+        }
+
+        public ISimpleOrderedBag<ICourse> GetAllCoursesSorted(IComparer<ICourse> cmp)
+        {
+            SimpleSortedList<ICourse> sortedCourses = new SimpleSortedList<ICourse>(cmp);
+            sortedCourses.AddAll(this.courses.Values);
+
+            return sortedCourses;
+        }
+
+        public ISimpleOrderedBag<IStudent> GetAllStudentsSorted(IComparer<IStudent> cmp)
+        {
+            SimpleSortedList<IStudent> sortedStudents = new SimpleSortedList<IStudent>(cmp);
+            sortedStudents.AddAll(this.students.Values);
+
+            return sortedStudents;
         }
     }
 }
