@@ -1,40 +1,13 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.IO.Commands
+﻿namespace BashSoft.IO.Commands
 {
-    using Execptions;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
 
     public class OrderAndTakeCommand : Command
     {
-        public OrderAndTakeCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputManager) : base(input, data, judge, repository, inputOutputManager) { }
-
-        private void TryParseParametersForOrderAndTake(string takeCommand, string takeQuantity, string courseName, string comparison)
+        public OrderAndTakeCommand(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputManager)
+            : base(input, data, judge, repository, inputOutputManager)
         {
-            if (takeCommand == "take")
-            {
-                if (takeQuantity == "all")
-                {
-                    this.Repository.OrderAndTake(courseName, comparison, null);
-                }
-                else
-                {
-                    int studentsToTake;
-                    var hasParsed = int.TryParse(takeQuantity, out studentsToTake);
-                    if (hasParsed)
-                    {
-                        this.Repository.OrderAndTake(courseName, comparison, studentsToTake);
-                    }
-                    else
-                    {
-                        throw new InvalidTakeQueryParamterException();
-                    }
-                }
-            }
-            else
-            {
-                throw new InvalidTakeQueryParamterException();
-            }
         }
 
         public override void Execute()
@@ -50,6 +23,33 @@ namespace BashSoft.IO.Commands
             var takeQuantity = this.Data[4].ToLower();
 
             this.TryParseParametersForOrderAndTake(takeCommand, takeQuantity, courseName, comparison);
+        }
+
+        private void TryParseParametersForOrderAndTake(string takeCommand, string takeQuantity, string courseName, string comparison)
+        {
+            if (takeCommand == "take")
+            {
+                if (takeQuantity == "all")
+                {
+                    this.Repository.OrderAndTake(courseName, comparison, null);
+                }
+                else
+                {
+                    var hasParsed = int.TryParse(takeQuantity, out int studentsToTake);
+                    if (hasParsed)
+                    {
+                        this.Repository.OrderAndTake(courseName, comparison, studentsToTake);
+                    }
+                    else
+                    {
+                        throw new InvalidTakeQueryParamterException();
+                    }
+                }
+            }
+            else
+            {
+                throw new InvalidTakeQueryParamterException();
+            }
         }
     }
 }

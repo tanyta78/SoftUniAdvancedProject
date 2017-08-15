@@ -1,4 +1,4 @@
-﻿namespace BashSoft.Execptions
+﻿namespace BashSoft.Exceptions
 {
     using System;
 
@@ -6,11 +6,13 @@
     {
         private const string NullOrEmptyValue = "The value of the variable CANNOT be null or empty!";
 
-        public InvalidStringException() : base(NullOrEmptyValue)
+        public InvalidStringException()
+            : base(NullOrEmptyValue)
         {
         }
 
-        public InvalidStringException(string message) : base(message)
+        public InvalidStringException(string message)
+            : base(message)
         {
         }
     }

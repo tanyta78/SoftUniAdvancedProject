@@ -1,4 +1,4 @@
-﻿namespace BashSoft.Execptions
+﻿namespace BashSoft.Exceptions
 {
     using System;
 
@@ -6,11 +6,13 @@
     {
         private const string InvalidTakeQueryParamter = "The take command expected does not match the format wanted!";
 
-        public InvalidTakeQueryParamterException() : base(InvalidTakeQueryParamter)
+        public InvalidTakeQueryParamterException()
+            : base(InvalidTakeQueryParamter)
         {
         }
 
-        public InvalidTakeQueryParamterException(string message) : base(message)
+        public InvalidTakeQueryParamterException(string message)
+            : base(message)
         {
         }
     }

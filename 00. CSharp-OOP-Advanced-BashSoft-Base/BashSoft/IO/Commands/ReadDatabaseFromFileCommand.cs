@@ -1,13 +1,15 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.IO.Commands
+﻿namespace BashSoft.IO.Commands
 {
-    using Execptions;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
 
     public class ReadDatabaseFromFileCommand : Command
     {
-        public ReadDatabaseFromFileCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputManager) : base(input, data, judge, repository, inputOutputManager) { }
+        public ReadDatabaseFromFileCommand(
+            string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputManager)
+            : base(input, data, judge, repository, inputOutputManager)
+        {
+        }
 
         public override void Execute()
         {

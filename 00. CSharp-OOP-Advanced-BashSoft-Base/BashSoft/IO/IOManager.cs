@@ -1,12 +1,11 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft
+﻿namespace BashSoft.IO
 {
-    using Exceptions;
-    using Execptions;
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
+    using BashSoft.StaticData;
 
     public class IOManager : IDirectoryManager
     {
@@ -34,11 +33,11 @@ namespace BashSoft
                         subFolders.Enqueue(directoryPath);
                     }
 
-                    OutputWriter.WriteMessageOnNewLine(string.Format("{0}{1}", new string('-', identation), currentPath));
+                    OutputWriter.WriteMessageOnNewLine($"{new string('-', identation)}{currentPath}");
 
                     foreach (var file in Directory.GetFiles(SessionData.currentPath))
                     {
-                        int indexOfLastSlash = file.LastIndexOf("\\");
+                        int indexOfLastSlash = file.LastIndexOf("\\", StringComparison.Ordinal);
                         string fileName = file.Substring(indexOfLastSlash);
                         OutputWriter.WriteMessageOnNewLine(new string('-', indexOfLastSlash) + fileName);
                     }
@@ -70,7 +69,7 @@ namespace BashSoft
                 try
                 {
                     string currentPath = SessionData.currentPath;
-                    int indexOfLastSlash = currentPath.LastIndexOf("\\");
+                    int indexOfLastSlash = currentPath.LastIndexOf("\\", StringComparison.Ordinal);
                     string newPath = currentPath.Substring(0, indexOfLastSlash);
                     SessionData.currentPath = newPath;
                 }

@@ -1,7 +1,10 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft
+﻿namespace BashSoft
 {
+    using BashSoft.Contracts;
+    using BashSoft.IO;
+    using BashSoft.Judge;
+    using BashSoft.Repository;
+
     public class Launcher
     {
         public static void Main()

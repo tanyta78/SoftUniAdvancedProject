@@ -1,13 +1,15 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.IO.Commands
+﻿namespace BashSoft.IO.Commands
 {
-    using Execptions;
+    using BashSoft.Contracts;
+    using Exceptions;
 
     public class TraverseFoldersCommand : Command
     {
-        public TraverseFoldersCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputManager) : base(input, data, judge, repository, inputOutputManager) { }
+        public TraverseFoldersCommand(
+            string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputManager)
+            : base(input, data, judge, repository, inputOutputManager)
+        {
+        }
 
         public override void Execute()
         {
@@ -17,8 +19,7 @@ namespace BashSoft.IO.Commands
             }
             else
             {
-                int depth;
-                var success = int.TryParse(this.Data[1], out depth);
+                var success = int.TryParse(this.Data[1], out int depth);
                 if (success)
                 {
                     this.InputOutputManager.TraverseDirectory(depth);

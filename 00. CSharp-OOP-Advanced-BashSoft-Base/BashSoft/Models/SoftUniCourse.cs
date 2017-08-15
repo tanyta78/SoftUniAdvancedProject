@@ -1,8 +1,9 @@
 ﻿namespace BashSoft.Models
 {
-    using BashSoft.Contracts;
-    using Execptions;
+    using System;
     using System.Collections.Generic;
+    using BashSoft.Contracts;
+    using Exceptions;
 
     public class SoftUniCourse : ICourse
     {
@@ -21,21 +22,20 @@
 
         public string Name
         {
-            get { return this.name; }
+            get => this.name;
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new InvalidStringException();
                 }
+
                 this.name = value;
             }
         }
 
-        public IReadOnlyDictionary<string, IStudent> StudentsByName
-        {
-            get { return this.studentsByName; }
-        }
+        public IReadOnlyDictionary<string, IStudent> StudentsByName => this.studentsByName;
 
         public void EnrollStudent(IStudent student)
         {
@@ -49,7 +49,7 @@
 
         public int CompareTo(ICourse other)
         {
-            return this.Name.CompareTo(other.Name);
+            return string.Compare(this.Name, other.Name, StringComparison.Ordinal);
         }
 
         public override string ToString()

@@ -1,16 +1,15 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft
+﻿namespace BashSoft.IO
 {
-    using Execptions;
-    using IO.Commands;
     using System;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
+    using BashSoft.IO.Commands;
 
     public class CommandInterpreter : IInterpreter
     {
-        private IContentComparer judge;
-        private IDatabase repository;
-        private IDirectoryManager inputOutputManager;
+        private readonly IContentComparer judge;
+        private readonly IDatabase repository;
+        private readonly IDirectoryManager inputOutputManager;
 
         public CommandInterpreter(IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputManager)
         {

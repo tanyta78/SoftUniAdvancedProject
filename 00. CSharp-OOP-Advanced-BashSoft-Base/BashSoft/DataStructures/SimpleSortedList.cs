@@ -1,111 +1,121 @@
-﻿using BashSoft.Contracts;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BashSoft.DataStructures
+﻿namespace BashSoft.DataStructures
 {
-    public class SimpleSortedList<T> : ISimpleOrderedBag<T> where T : IComparable<T>
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Text;
+    using BashSoft.Contracts;
+
+    public class SimpleSortedList<T> : ISimpleOrderedBag<T>
+        where T : IComparable<T>
     {
         private const int DefaultSize = 16;
 
         private T[] innerCollection;
-        private int size;
         private IComparer<T> comparison;
 
         public SimpleSortedList(int capacity, IComparer<T> comparer)
         {
             this.comparison = comparer;
-            InitializeInnerCollection(capacity);
+            this.InitializeInnerCollection(capacity);
         }
 
-        public SimpleSortedList(int capacity) : this(capacity, Comparer<T>.Create((x, y) => x.CompareTo(y)))
+        public SimpleSortedList(int capacity)
+            : this(capacity, Comparer<T>.Create((x, y) => x.CompareTo(y)))
         {
         }
 
-        public SimpleSortedList(IComparer<T> comparer) : this(DefaultSize, comparer)
+        public SimpleSortedList(IComparer<T> comparer)
+            : this(DefaultSize, comparer)
         {
         }
 
-        public SimpleSortedList() : this(DefaultSize)
+        public SimpleSortedList()
+            : this(DefaultSize)
         {
         }
+
+        public int Size { get; private set; }
 
         public void Add(T element)
         {
-            if (this.innerCollection.Length == this.size)
+            if (this.innerCollection.Length == this.Size)
             {
-                Resize();
+                this.Resize();
             }
-            this.innerCollection[size] = element;
-            this.size++;
-            Array.Sort(this.innerCollection, 0, this.size, this.comparison);
-            // BubbleSort(this.innerCollection, this.comparison);
-            //SelectionSort(this.innerCollection, this.comparison);
-            //InsertionSort(this.innerCollection, this.comparison);
-            //to do QuickSort
+
+            this.innerCollection[this.Size] = element;
+            this.Size++;
+            Array.Sort(this.innerCollection, 0, this.Size, this.comparison);
+
+            /*  BubbleSort(this.innerCollection, this.comparison);
+             SelectionSort(this.innerCollection, this.comparison);
+             InsertionSort(this.innerCollection, this.comparison);
+             to do QuickSort*/
         }
 
-        private void InsertionSort(T[] collection, IComparer<T> comparer)
-        {
-            var equalityComparer = comparer ?? Comparer<T>.Default;
-            for (var counter = 0; counter < collection.Length - 1; counter++)
-            {
-                var index = counter + 1;
-                while (index > 0)
+        /*
+                private void InsertionSort(T[] collection, IComparer<T> comparer)
                 {
-                    if (equalityComparer.Compare(collection[index - 1], collection[index]) > 0)
+                    var equalityComparer = comparer ?? Comparer<T>.Default;
+                    for (var counter = 0; counter < collection.Length - 1; counter++)
                     {
-                        var temp = collection[index - 1];
-                        collection[index - 1] = collection[index];
-                        collection[index] = temp;
-                    }
-                    index--;
-                }
-            }
-        }
+                        var index = counter + 1;
+                        while (index > 0)
+                        {
+                            if (equalityComparer.Compare(collection[index - 1], collection[index]) > 0)
+                            {
+                                var temp = collection[index - 1];
+                                collection[index - 1] = collection[index];
+                                collection[index] = temp;
+                            }
 
-        private void SelectionSort(T[] collection, IComparer<T> comparer)
-        {
-            T temp;
-
-            for (int i = 0; i < collection.Length - 1; i++)
-            {
-                for (int j = i; j < collection.Length - 1; j++)
-                {
-                    T first = collection[i];
-                    T other = collection[j + 1];
-
-                    if (comparer.Compare(first, other) < 0)
-                    {
-                        temp = collection[i];
-                        collection[i] = collection[j + 1];
-                        collection[j + 1] = temp;
+                            index--;
+                        }
                     }
                 }
-            }
-        }
 
-        private void BubbleSort(T[] collection, IComparer<T> comparer)
-        {
-            bool isRunning = true;
-            while (isRunning)
-            {
-                isRunning = false;
-                for (int j = 0; j < collection.Length - 1; j++)
+                private void SelectionSort(T[] collection, IComparer<T> comparer)
                 {
-                    T first = collection[j];
-                    T other = collection[j + 1];
-                    if (comparer.Compare(first, other) > 0)
+                    T temp;
+
+                    for (int i = 0; i < collection.Length - 1; i++)
                     {
-                        collection[j] = other;
-                        collection[j + 1] = first;
-                        isRunning = true;
+                        for (int j = i; j < collection.Length - 1; j++)
+                        {
+                            T first = collection[i];
+                            T other = collection[j + 1];
+
+                            if (comparer.Compare(first, other) < 0)
+                            {
+                                temp = collection[i];
+                                collection[i] = collection[j + 1];
+                                collection[j + 1] = temp;
+                            }
+                        }
                     }
                 }
-            }
-        }
+
+                private void BubbleSort(T[] collection, IComparer<T> comparer)
+                {
+                    bool isRunning = true;
+                    while (isRunning)
+                    {
+                        isRunning = false;
+                        for (int j = 0; j < collection.Length - 1; j++)
+                        {
+                            T first = collection[j];
+                            T other = collection[j + 1];
+                            if (comparer.Compare(first, other) > 0)
+                            {
+                                collection[j] = other;
+                                collection[j + 1] = first;
+                                isRunning = true;
+                            }
+                        }
+                    }
+                }
+        */
 
         public void AddAll(ICollection<T> collection)
         {
@@ -117,38 +127,14 @@ namespace BashSoft.DataStructures
             foreach (var element in collection)
             {
                 this.innerCollection[this.Size] = element;
-                this.size++;
+                this.Size++;
             }
 
-            Array.Sort(this.innerCollection, 0, this.size, this.comparison);
-            //BubbleSort(this.innerCollection, this.comparison);
-            //SelectionSort(this.innerCollection, this.comparison);
-        }
+            Array.Sort(this.innerCollection, 0, this.Size, this.comparison);
 
-        private void MultiResize(ICollection<T> collection)
-        {
-            int newSize = this.innerCollection.Length * 2;
-            while (this.Size + collection.Count >= newSize)
-            {
-                newSize *= 2;
-            }
+            // BubbleSort(this.innerCollection, this.comparison);
 
-            T[] newCollection = new T[newSize];
-            Array.Copy(this.innerCollection, newCollection, this.size);
-
-            this.innerCollection = newCollection;
-        }
-
-        private void Resize()
-        {
-            T[] newCollection = new T[this.size * 2];
-            Array.Copy(innerCollection, newCollection, Size);
-            innerCollection = newCollection;
-        }
-
-        public int Size
-        {
-            get { return this.size; }
+            // SelectionSort(this.innerCollection, this.comparison);
         }
 
         public string JoinWith(string joiner)
@@ -164,16 +150,6 @@ namespace BashSoft.DataStructures
             return sb.ToString();
         }
 
-        private void InitializeInnerCollection(int capacity)
-        {
-            if (capacity < 0)
-            {
-                throw new ArgumentException("Capacity cannot be negative!");
-            }
-
-            this.innerCollection = new T[capacity];
-        }
-
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < this.Size; i++)
@@ -184,7 +160,38 @@ namespace BashSoft.DataStructures
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
+        }
+
+        private void InitializeInnerCollection(int capacity)
+        {
+            if (capacity < 0)
+            {
+                throw new ArgumentException("Capacity cannot be negative!");
+            }
+
+            this.innerCollection = new T[capacity];
+        }
+
+        private void MultiResize(ICollection<T> collection)
+        {
+            int newSize = this.innerCollection.Length * 2;
+            while (this.Size + collection.Count >= newSize)
+            {
+                newSize *= 2;
+            }
+
+            T[] newCollection = new T[newSize];
+            Array.Copy(this.innerCollection, newCollection, this.Size);
+
+            this.innerCollection = newCollection;
+        }
+
+        private void Resize()
+        {
+            T[] newCollection = new T[this.Size * 2];
+            Array.Copy(this.innerCollection, newCollection, this.Size);
+            this.innerCollection = newCollection;
         }
     }
 }
