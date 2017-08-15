@@ -37,8 +37,21 @@
 
         public int Size { get; private set; }
 
+        public int Capacity
+        {
+            get
+            {
+                return this.innerCollection.Length;
+            }
+        }
+
         public void Add(T element)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (this.innerCollection.Length == this.Size)
             {
                 this.Resize();
@@ -46,7 +59,7 @@
 
             this.innerCollection[this.Size] = element;
             this.Size++;
-            Array.Sort(this.innerCollection, 0, this.Size, this.comparison);
+           Array.Sort(this.innerCollection, 0, this.Size, this.comparison);
 
             /*  BubbleSort(this.innerCollection, this.comparison);
              SelectionSort(this.innerCollection, this.comparison);
@@ -119,6 +132,11 @@
 
         public void AddAll(ICollection<T> collection)
         {
+            if (collection == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (this.Size + collection.Count >= this.innerCollection.Length)
             {
                 this.MultiResize(collection);
@@ -139,6 +157,11 @@
 
         public string JoinWith(string joiner)
         {
+            if (joiner == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             StringBuilder sb = new StringBuilder();
             foreach (var element in this)
             {
@@ -146,8 +169,43 @@
                 sb.Append(joiner);
             }
 
-            sb.Remove(sb.Length - 1, 1);
+            sb.Remove(sb.Length - joiner.Length, joiner.Length);
             return sb.ToString();
+        }
+
+        public bool Remove(T element)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            bool hasBeenRemoved = false;
+            int indexOfRemovingElement = 0;
+
+            for (int i = 0; i < this.Size; i++)
+            {
+                if (this.innerCollection[i].Equals(element))
+                {
+                    indexOfRemovingElement = i;
+                    this.innerCollection[i] = default(T);
+                    hasBeenRemoved = true;
+                   break;
+                }
+            }
+
+            if (hasBeenRemoved)
+            {
+                for (int i = indexOfRemovingElement; i < this.Size - 1; i++)
+                {
+                    this.innerCollection[i] = this.innerCollection[i + 1];
+                }
+
+                this.innerCollection[this.Size - 1] = default(T);
+                this.Size--;
+            }
+
+            return hasBeenRemoved;
         }
 
         public IEnumerator<T> GetEnumerator()
